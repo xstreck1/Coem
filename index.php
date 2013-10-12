@@ -5,7 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title></title>
         <script>
-            function openCoem()
+            function openCoem(open)
             {
                 if (window.XMLHttpRequest)
                 {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -22,20 +22,17 @@
                         document.getElementById("coem_container").innerHTML = xmlhttp.responseText;
                     }
                 }
-                var open_cmd = "getCoem.php?session="+'<?php echo session_id(); ?>'+"&open=1";
+                var open_cmd = "getCoem.php?session="+'<?php echo session_id(); ?>'+"&open="+open;
                 xmlhttp.open("GET", open_cmd, true);
                 xmlhttp.send();
             }
         </script>
         <script>
-            $(window).unload(function() {
-                alert('Visitor left page');
-            });
+            window.onbeforeunload = openCoem(0);
         </script>
     </head>
     <body>
-        <?php echo session_id(); ?>
-        <button value="Open a coem" onclick="openCoem();" >Open a coem</button><br />
+        <button value="Open a coem" onclick="openCoem(1);" >Open a coem</button><br />
         <div id="coem_container"></div>
         <br />
         <?php
