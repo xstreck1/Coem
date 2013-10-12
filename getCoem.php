@@ -14,26 +14,34 @@ if (mysqli_connect_errno($con)) {
 
 // Requesting to open a coem 
 if ($open == "1") {
-    $select = "SELECT * FROM coems";
-    $result_set = mysqli_query($con, $select);
+    $select_coems = "SELECT * FROM coems";
+    $result_set = mysqli_query($con, $select_coems);
 
-    // Find an available coem
+    $select_sessions = "SELECT * FROM sessions WHERE ID='$my_session'";
+    $session_entry = mysqli_query($con, $select_sessions);
     $used_id = -1;
+    $open_id = -1;
+    if ($row = mysqli_fetch_array($session_entry)) {
+        $open_id = $row["coemid"];
+    }
+    
+    // Find an available coem
     while ($row = mysqli_fetch_array($result_set)) {
-        if ($row['in_use'] == "0") {
+        if (($row['in_use'] == "0" & $row['finished'] < 8 ) | ($open_id == $row['coemid'])) {
             $used_id = $row['coemid'];
             break;
         }
     }
 
     // Disable the current coem
-    $disable_chosen = "UPDATE coems SET in_use='1' WHERE coemid=$used_id";
-    mysqli_query($con, $disable_chosen);
+    if ($open_id == -1) {
+        $disable_chosen = "UPDATE coems SET in_use='1' WHERE coemid=$used_id";
+        mysqli_query($con, $disable_chosen);
 
-    // Assign the coem to the session
-    $assign_session = "INSERT INTO sessions VALUES('$my_session',$used_id)";
-    mysqli_query($con, $assign_session);
-
+        // Assign the coem to the session
+        $assign_session = "INSERT INTO sessions VALUES('$my_session',$used_id)";
+        mysqli_query($con, $assign_session);
+    }
     // Return the respective part
     echo "Last line is:<br />";
     echo $row["line" . $row["finished"]] . "<br />";
@@ -50,7 +58,7 @@ if ($open == "1") {
         $delete_session = "DELETE FROM sessions WHERE ID='$my_session'";
         mysqli_query($con, $delete_session);
     } else {
-        echo "Session not in the database.";
+        // echo "Session not in the database.";
     }
 }
 
