@@ -1,31 +1,19 @@
 <!DOCTYPE html>
-<?php session_start(); ?>
+<?php
+session_start();
+include './globals.php';
+?>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title></title>
+        <script src="async_call.js"></script>
         <script>
-            function openCoem(open)
+            function coemConnection(open)
             {
-                if (window.XMLHttpRequest)
-                {// code for IE7+, Firefox, Chrome, Opera, Safari
-                    xmlhttp = new XMLHttpRequest();
-                }
-                else
-                {// code for IE6, IE5
-                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                }
-                xmlhttp.onreadystatechange = function()
-                {
-                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-                    {
-                        document.getElementById("coem_container").innerHTML = xmlhttp.responseText;
-                    }
-                }
-                var open_cmd = "getCoem.php?session=" + '<?php echo session_id(); ?>' + "&open=" + open;
-                xmlhttp.open("GET", open_cmd, true);
-                xmlhttp.send();
+                get_data_async("getCoem.php?session=" + '<?php echo session_id(); ?>' + "&open=" + open, "coem_container");
 
+                // If there is a request to open the file (and not to close the session.
                 if (open == 1) {
                     var btn = document.createElement("BUTTON");
                     var t = document.createTextNode("New line");
@@ -33,7 +21,7 @@
                     input.setAttribute('id', 'input_line');
                     btn.setAttribute('onClick', 'sendLine();');
                     btn.appendChild(t);
-                    z = document.getElementById("tag");
+                    z = document.getElementById("user_input");
                     z.innerHTML = '';
                     z.appendChild(btn);
                     z.appendChild(input);
@@ -41,39 +29,21 @@
             }
         </script>
         <script>
-            window.onbeforeunload = openCoem(0);
+            window.onbeforeunload = coemConnection(0);
         </script>
         <script>
             function sendLine() {
-                if (window.XMLHttpRequest)
-                {// code for IE7+, Firefox, Chrome, Opera, Safari
-                    xmlhttp = new XMLHttpRequest();
-                }
-                else
-                {// code for IE6, IE5
-                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                }
-                xmlhttp.onreadystatechange = function()
-                {
-                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-                    {
-                        document.getElementById("coem_container").innerHTML = xmlhttp.responseText;
-                    }
-                }
-                var text = document.getElementById("input_line").value;
-                var open_cmd = "newLine.php?session=" + '<?php echo session_id(); ?>' + "&text=" + text;
-                xmlhttp.open("GET", open_cmd, true);
-                xmlhttp.send();
-                document.getElementById("tag").innerHTML = '';
+                get_data_async("newLine.php?session=" + '<?php echo session_id(); ?>' + "&text=" + text, "coem_container");
+                // Hide the user input.
+                document.getElementById("user_input").innerHTML = '';
             }
         </script>
     </head>
     <body>
-        <button value="Open a coem" onclick="openCoem(1);" >Open a coem</button><br />
+        <button value="Open a coem" onclick="coemConnection(1);" >Open a coem</button><br />
         <div id="coem_container"></div>
-        <div id="tag"></div>
+        <div id="user_input"></div>
         <br />
-
 
         Finished Coems: <br />
         <?php include 'readCoems.php'; ?>
