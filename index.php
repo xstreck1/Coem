@@ -33,6 +33,8 @@ include './globals.php';
         </script>
         <script>
             function sendLine() {
+                var text = document.getElementById("input_line").value;
+                console.log("text: " + text);
                 get_data_async("newLine.php?session=" + '<?php echo session_id(); ?>' + "&text=" + text, "coem_container");
                 // Hide the user input.
                 document.getElementById("user_input").innerHTML = '';
