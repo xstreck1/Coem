@@ -11,7 +11,6 @@ while ($row = mysqli_fetch_array($result_set)) {
             $line = "line".$i;
             echo $row[$line] . "<BR />";
         }
-        echo "<HR />";
     }
 }
 ?>

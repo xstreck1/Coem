@@ -26,9 +26,19 @@ function open_coem($connection, $session) {
             break;
         }
     }
-
+    
+    // Return the respective part
+    if ($used_id != -1) {
+        echo "The last line was: \"";
+        echo $row["line" . $row["finished"]] . "\".<br />";
+    } else {
+        echo "You start a new coem. Write a fresh line to start a new coem!<br />";
+        $used_id = mysqli_num_rows($result_set) + 1;
+    }
+    
     // Disable the current coem if not already displayed.
     if ($open_id == -1) {
+        // May skip for the newly created coem.
         $disable_chosen = "UPDATE coems SET in_use='1' WHERE coemid=$used_id";
         mysqli_query($connection, $disable_chosen);
 
@@ -37,9 +47,7 @@ function open_coem($connection, $session) {
         mysqli_query($connection, $assign_session);
     }
     
-    // Return the respective part
-    echo "Last line is:<br />";
-    echo $row["line" . $row["finished"]] . "<br />";
+
 }
 
 function close_coem($connection, $session) {
