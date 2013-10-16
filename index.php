@@ -8,6 +8,9 @@ include './coemFunctions.php';
     <head>
         <title>Just A Concept</title>
         <script src="async_call.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            set_timeout(<?php echo constant("timeout")?>);
+        </script>
         <meta name="description"
               content="Homepage of Just A Concept - open source group bringing new ideas for interactive media to life." />
         <meta name="keywords"

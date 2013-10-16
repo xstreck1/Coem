@@ -1,4 +1,5 @@
 <?php
+
 include './globals.php';
 
 function get_coem_id($link, $session) {
@@ -47,7 +48,7 @@ function open_coem($link, $session) {
 // Check if is not already opened. If so, finish.
     $coemid = get_coem_id($link, $session);
     if (get_finished($link, $coemid) >= 8 || $coemid == null)
-        $coemid = -1;    
+        $coemid = -1;
 
     mysqli_query("LOCK TABLES " . constant("coems_table") . " WRITE");
 
@@ -57,10 +58,12 @@ function open_coem($link, $session) {
         $result = mysqli_query($link, $query);
         $coemid = -1;
         while ($row = mysqli_fetch_array($result)) {
-            if (time() - $row['time'] > constant("timeout")) {
-                close_coem($link, $row['coemid']);
-            }
-            if ($row['finished'] < 8 && $row['time'] == 0) {
+            if ($row['finished'] < 8) {
+                if ($row['time'] != 0 && time() - $row['time'] <= constant("timeout"))
+                    continue;
+                else if ($row['time'] != 0)
+                    close_coem($link, $row['coemid']);
+
                 $found = true;
                 $coemid = $row['coemid'];
                 break;
@@ -70,7 +73,7 @@ function open_coem($link, $session) {
             $coemid = mysqli_num_rows($result) + 1;
         }
     } else {
-       $found = true; 
+        $found = true;
     }
 
     if ($found) {

@@ -3,6 +3,19 @@
  * and open the template in the editor.
  */
 
+var timeout_time = 1000;
+var timeout = timeout_time;
+var second = 1000;
+
+function set_timeout(timeout_secs) {
+    timeout_time = timeout_secs * 1000;
+}
+
+function resetTimeout(time_) {
+    clearTimeout(timeout);
+    timeout = setTimeout("location.reload(true);", time_);
+}
+
 function get_data_async(command, tag_id) {
     if (window.XMLHttpRequest)
     {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -60,12 +73,7 @@ function coemConnection(session) {
     input_div.appendChild(document.createElement("BR"));
     input_div.appendChild(btn);
     
-    resetTimeout();
-}
-
-function resetTimeout() {
-    clearTimeout(timeout);
-    timeout = setTimeout("location.reload(true);", 300000);
+    resetTimeout(timeout_time);
 }
 
 function sendLine(session) {
@@ -80,7 +88,7 @@ function sendLine(session) {
         text = text.toLowerCase();
         post_data_async("newLine.php?session=" + session + "&text=" + text);
         // Hide the user input.
-        location.reload();
+        resetTimeout(second);
     }
 }
 function isAlpha(xStr) {

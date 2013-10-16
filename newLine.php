@@ -1,8 +1,13 @@
 <?php
+ignore_user_abort(true);
+set_time_limit(100);
 include './coemFunctions.php';
 
 $session = htmlspecialchars($_GET['session']);
 $text = htmlspecialchars($_GET['text']);
+$no_space = str_replace(' ', '', $text);
+if (!ctype_alpha($no_space))
+    return;
 
 $link = connect_database();
 
