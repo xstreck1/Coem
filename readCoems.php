@@ -1,10 +1,10 @@
 <?php
-$connection = connect_coem();
+$link = connect_database();
 
-$select = "SELECT * FROM coems";
-$result_set = mysqli_query($connection, $select);
+$query = "SELECT * FROM coems";
+$result = mysqli_query($link, $query);
 
-while ($row = mysqli_fetch_array($result_set)) {
+while ($row = mysqli_fetch_array($result)) {
     if ($row['finished'] >= 8) {
         echo "<HR />";
         for ($i = 1; $i <= 8; $i++) {
@@ -13,4 +13,6 @@ while ($row = mysqli_fetch_array($result_set)) {
         }
     }
 }
+
+mysqli_close($link);
 ?>

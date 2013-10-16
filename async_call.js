@@ -23,35 +23,52 @@ function get_data_async(command, tag_id) {
     xmlhttp.send();
 }
 
-function coemConnection(open)
-{
-    get_data_async("getCoem.php?session=" + '<?php echo session_id(); ?>' + "&open=" + open, "coem_container");
-
-    // If there is a request to open the file (and not to close the session.
-    if (open == 1) {
-        var span = document.createElement("SPAN");
-        var span_text = document.createTextNode("New line: ");
-        span.appendChild(span_text);
-
-        var btn = document.createElement("BUTTON");
-        var btn_text = document.createTextNode("Submit");
-        btn.setAttribute('onClick', 'sendLine();');
-        btn.appendChild(btn_text);
-
-        var input = document.createElement("INPUT");
-        input.setAttribute('size', 80);
-        input.setAttribute('id', 'input_line');
-
-        input_div = document.getElementById("user_input");
-        input_div.innerHTML = '';
-        input_div.appendChild(span);
-        input_div.appendChild(input);
-        input_div.appendChild(document.createElement("BR"));
-        input_div.appendChild(btn);
+function post_data_async(command) {
+    if (window.XMLHttpRequest)
+    {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
     }
+    else
+    {// code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("POST", command, true);
+    xmlhttp.send();
 }
 
-function sendLine() {
+function coemConnection(session) {
+    get_data_async("openCoem.php?session=" + session, "coem_container");
+
+    // If there is a request to open the file (and not to close the session.
+    var span = document.createElement("SPAN");
+    var span_text = document.createTextNode("New line: ");
+    span.appendChild(span_text);
+
+    var btn = document.createElement("BUTTON");
+    var btn_text = document.createTextNode("Submit");
+    btn.setAttribute('onClick', 'sendLine(\"' + session + '\");');
+    btn.appendChild(btn_text);
+
+    var input = document.createElement("INPUT");
+    input.setAttribute('size', 80);
+    input.setAttribute('id', 'input_line');
+
+    input_div = document.getElementById("user_input");
+    input_div.innerHTML = '';
+    input_div.appendChild(span);
+    input_div.appendChild(input);
+    input_div.appendChild(document.createElement("BR"));
+    input_div.appendChild(btn);
+    
+    resetTimeout();
+}
+
+function resetTimeout() {
+    clearTimeout(timeout);
+    timeout = setTimeout("location.reload(true);", 300000);
+}
+
+function sendLine(session) {
     document.getElementById("error").innerHTML = "";
     var text = String(document.getElementById("input_line").value);
     var length = text.length;
@@ -61,9 +78,9 @@ function sendLine() {
         document.getElementById("error").innerHTML = "The text \"" + text + "\" is not valid. Only letters and spaces are allowed.";
     } else {
         text = text.toLowerCase();
-        get_data_async("newLine.php?session=" + '<?php echo session_id(); ?>' + "&text=" + text, "coem_container");
+        post_data_async("newLine.php?session=" + session + "&text=" + text);
         // Hide the user input.
-        document.getElementById("user_input").innerHTML = '';
+        location.reload();
     }
 }
 function isAlpha(xStr) {
