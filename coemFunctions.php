@@ -50,7 +50,9 @@ function open_coem($link, $session) {
     if (get_finished($link, $coemid) >= 8 || $coemid == null)
         $coemid = -1;
 
-    mysqli_query("LOCK TABLES " . constant("coems_table") . " WRITE");
+    while(!mysqli_query($link, "LOCK TABLES " . constant("coems_table") . " WRITE"))
+	sleep(1);
+    ignore_user_abort(true);
 
     if ($coemid == -1) {
         // Find an available coem
@@ -84,11 +86,13 @@ function open_coem($link, $session) {
         mysqli_query($link, $query);
     }
 
-    // Assign the coem to the session
-    $query = "INSERT INTO sessions VALUES('$session',$coemid)";
-    mysqli_query($link, $query);
+    mysqli_query($link, "UNLOCK TABLES");
 
-    mysqli_query("UNLOCK TABLES");
+    // Assign the coem to the session
+    if (get_coem_id($link, $session) == -1) {
+        $query = "INSERT INTO sessions VALUES('$session',$coemid)";
+        mysqli_query($link, $query); 
+    }
 }
 
 function close_coem($link, $coemid) {
@@ -107,7 +111,6 @@ function get_last_line($link, $session) {
 
 function exit_database($session) {
     $link = connect_database();
-    $coemid = get_coem_id($link, $session);
     close_coem($link, $session);
     mysqli_close($link);
 }

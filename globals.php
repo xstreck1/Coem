@@ -5,5 +5,5 @@
     define("sql_database_name", "coem");
     define("coems_table", "coems");
     define("sessions_table", "sessions");
-    define("timeout", "600");
+    define("timeout", "60");
 ?>
