@@ -11,8 +11,8 @@ $line = get_last_line($link, $session);
 if ($line == "") {
     echo "You start a new coem. Write a fresh line to start a new coem!<br />";
 } else {
-    echo "The last line was: \"";
-    echo $line . "\".<br />";
+    echo "Last line: ";
+    echo "<span class=\"coem\">" . $line . "</span><br />";
 } 
 
 mysqli_close($link);

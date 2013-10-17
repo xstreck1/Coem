@@ -3,9 +3,10 @@
  * and open the template in the editor.
  */
 
-var timeout_time = 1000;
-var timeout = timeout_time;
 var second = 1000;
+var timeout_time = second;
+var timeout = timeout_time;
+var refresh = second;
 
 function set_timeout(timeout_secs) {
     timeout_time = timeout_secs * 1000;
@@ -14,6 +15,11 @@ function set_timeout(timeout_secs) {
 function resetTimeout(time_) {
     clearTimeout(timeout);
     timeout = setTimeout("location.reload(true);", time_);
+}
+
+function reOpen(session) {
+    clearTimeout(refresh);
+    refresh = setTimeout("coemConnection(\""+session+"\");", Math.max(second,timeout_time - second));
 }
 
 function get_data_async(command, tag_id) {
@@ -50,6 +56,7 @@ function post_data_async(command) {
 }
 
 function coemConnection(session) {
+    document.getElementById("coem_container").innerHTML = "please wait";
     get_data_async("openCoem.php?session=" + session, "coem_container");
 
     // If there is a request to open the file (and not to close the session.
@@ -65,6 +72,7 @@ function coemConnection(session) {
     var input = document.createElement("INPUT");
     input.setAttribute('size', 80);
     input.setAttribute('id', 'input_line');
+    input.setAttribute('class', 'coem');
 
     input_div = document.getElementById("user_input");
     input_div.innerHTML = '';
@@ -73,7 +81,7 @@ function coemConnection(session) {
     input_div.appendChild(document.createElement("BR"));
     input_div.appendChild(btn);
     
-    resetTimeout(timeout_time);
+    reOpen(session);
 }
 
 function sendLine(session) {

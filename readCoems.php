@@ -1,7 +1,7 @@
 <?php
 $link = connect_database();
 
-$query = "SELECT * FROM coems";
+$query = "SELECT * FROM coems ORDER BY coemid DESC";
 $result = mysqli_query($link, $query);
 
 while ($row = mysqli_fetch_array($result)) {

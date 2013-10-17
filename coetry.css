@@ -1,0 +1,45 @@
+div.title {
+	min-height: 50px;
+	font-size: 22px;
+	font-weight: bold;
+	text-transform:uppercase;
+	text-align: center;
+}
+
+p.desc {
+	
+}
+
+div.screen_fig {
+	 text-align: center;
+	 margin: 5px;
+}
+
+img.screen_pic {
+	border-width: 1px;
+	border-style: solid;
+	border-color: grey;
+	width: 498px;
+}
+
+div.screen_desc {
+	 margin: 5px;
+	 font-weight: bold;
+}
+
+div.download {
+	text-align: center;	
+	font-weight: bold;
+}
+
+a.download_link {
+	
+}
+
+button {
+    min-width: 100px;
+}
+
+.coem {
+    font-family: "Courier New";
+}

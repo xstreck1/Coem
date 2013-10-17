@@ -9,7 +9,7 @@ include './coemFunctions.php';
         <title>Just A Concept</title>
         <script src="async_call.js" type="text/javascript"></script>
         <script type="text/javascript">
-            set_timeout(<?php echo constant("timeout")?>);
+            set_timeout(<?php echo constant("timeout") ?>);
         </script>
         <meta name="description"
               content="Homepage of Just A Concept - open source group bringing new ideas for interactive media to life." />
@@ -17,7 +17,7 @@ include './coemFunctions.php';
               content="Just A Concept, Games, Android, Interactive Media, Culture" />
         <link rel="shortcut icon" href="../../logo.ico" />
         <link rel="stylesheet" type="text/css" href="../../main.css" />
-        <link rel="stylesheet" type="text/css" href="roommate.css" />
+        <link rel="stylesheet" type="text/css" href="coetry.css" />
     </head>
 
     <body>
@@ -35,14 +35,21 @@ include './coemFunctions.php';
         </div>
         <div class="page">
             <div id="content">
-                <div class="description">
-                    This is coetry. Here you can create coems - collaborative poems 
+                <div class="title">Coetry</div>
+                <p class="description">
+                    This is a page for creating coems - collaborative poems.
                     (or, in more standard terms <a href="http://en.wikipedia.org/wiki/Exquisite_corpse">Exquisite Corpse</a>).
-                    You simply receive the last line of someone else and have to follow up with a line of pure letters and spaces of a length 10-80 characters.
-                    Once 8 lines are done, the coem is listed down.
-                    If no coem is available (all are finished), you get the option to start a new one with a line purely on your own.
-                    Enjoy.     
-                </div>
+                </p>
+                <p class="description">
+                    After opening a coem, you receive the last line of someone else and have to follow up with your line of coetry. 
+                    If no coem is available (all are finished / in use), you get the option to start a new one with a line purely on your own.
+                </p>
+                <ul>
+                    <li>You can use only letters and spaces (no diacritics).</li>
+                    <li>The length of the line must be 10-80 characters.</li>
+                    <li>Once 8 lines are done, the coem is listed down.</li>
+                </ul>
+
 
                 <br />
                 <button value="Open a coem" onclick="coemConnection('<?php echo session_id() ?>');" >Open a coem</button><br />
@@ -52,9 +59,11 @@ include './coemFunctions.php';
                 <br />
 
                 Finished Coems: <br />
+                <div class="coem">
                 <?php
                 include 'readCoems.php';
                 ?>
+                </div>
             </div>
         </div>
         <p class="copyright">Copyright &copy; 2013 Just A Concept, Adam "PunyOne" Streck</p>
