@@ -1,4 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?php
 session_start();
 include './coemFunctions.php';
@@ -38,7 +37,7 @@ include './coemFunctions.php';
                 <div class="title">Coetry</div>
                 <p class="description">
                     This is a page for creating coems - collaborative poems.
-                    (or, in more standard terms <a href="http://en.wikipedia.org/wiki/Exquisite_corpse">Exquisite Corpse</a>).
+                    (or, in more standard terms, <a href="http://en.wikipedia.org/wiki/Exquisite_corpse">Exquisite Corpses</a>).
                 </p>
                 <p class="description">
                     After opening a coem, you receive the last line of someone else and have to follow up with your line of coetry. 

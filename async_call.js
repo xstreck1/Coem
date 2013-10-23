@@ -19,7 +19,7 @@ function resetTimeout(time_) {
 
 function reOpen(session) {
     clearTimeout(refresh);
-    refresh = setTimeout("coemConnection(\""+session+"\");", Math.max(second,timeout_time - second));
+    refresh = setTimeout("post_data_async(\"openCoem.php?session="+session+"\");", Math.max(second,timeout_time - second));
 }
 
 function get_data_async(command, tag_id) {
@@ -56,6 +56,10 @@ function post_data_async(command) {
 }
 
 function coemConnection(session) {
+    if (!isSession(session)) {
+        document.getElementById("error").innerHTML = "Something is wrong with your session ID.";
+        return;
+    }
     document.getElementById("coem_container").innerHTML = "please wait";
     get_data_async("openCoem.php?session=" + session, "coem_container");
 
@@ -85,6 +89,10 @@ function coemConnection(session) {
 }
 
 function sendLine(session) {
+    if (!isSession(session)) {
+        document.getElementById("error").innerHTML = "Something is wrong with your session ID.";
+        return;
+    }
     document.getElementById("error").innerHTML = "";
     var text = String(document.getElementById("input_line").value);
     var length = text.length;
@@ -102,4 +110,11 @@ function sendLine(session) {
 function isAlpha(xStr) {
     var regEx = /^[a-zA-Z \-]+$/;
     return xStr.match(regEx);
+}
+
+function isSession(xStr) {
+    var regEx = /^[a-zA-Z0-9\-]+$/;
+    var long = (xStr.length > 10);
+    var short = (xStr.length < 255);
+    return long && short && xStr.match(regEx);
 }
